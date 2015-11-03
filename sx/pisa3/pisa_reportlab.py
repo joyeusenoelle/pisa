@@ -338,7 +338,7 @@ class PmlImageReader(object):
                 elif mode not in ('L', 'RGB', 'CMYK'):
                     im = im.convert('RGB')
                     self.mode = 'RGB'
-                self._data = im.tostring()
+                self._data = im.tobytes()
         return self._data
 
     def getImageData(self):
