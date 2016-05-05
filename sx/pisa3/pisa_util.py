@@ -499,7 +499,7 @@ class pisaFileObject:
         else:
 
             # Check if we have an external scheme
-            if basepath and not (uri.startswith("http://") or uri.startswith("https://")):
+            if basepath and not uri.startswith(('http://', 'https://')):
                 urlParts = urlparse.urlparse(basepath)
             else:
                 urlParts = urlparse.urlparse(uri)
@@ -510,7 +510,7 @@ class pisaFileObject:
             if len(urlParts[0]) > 1 :
 
                 # External data
-                if basepath:
+                if basepath and not uri.startswith(('http://', 'https://')):
                     uri = urlparse.urljoin(basepath, uri)
 
                 #path = urlparse.urlsplit(url)[2]
