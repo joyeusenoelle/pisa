@@ -1,5 +1,3 @@
-# -*- coding: ISO-8859-1 -*-
-
 # Copyright 2010 Dirk Holtwick, holtwick.it
 #
 # Licensed under the Apache License, Version 2.0 (the "License");
@@ -470,7 +468,7 @@ class pisaTempFile(object):
                      % (self.__class__.__name__, name)
             raise AttributeError(e)
 
-_rx_datauri = re.compile("^data:(?P<mime>[a-z]+/[a-z]+);base64,(?P<data>.*)$", re.M | re.DOTALL)
+_rx_datauri = re.compile("^data:(?P<mime>[a-z]+/[a-z]+)(;charset=[\w-]+)?;base64,(?P<data>.*)$", re.DOTALL)
 
 class pisaFileObject:
 
