@@ -468,7 +468,7 @@ class pisaTempFile(object):
                      % (self.__class__.__name__, name)
             raise AttributeError(e)
 
-_rx_datauri = re.compile("^data:(?P<mime>[a-z]+/[a-z]+)(;charset=[\w-]+)?;base64,(?P<data>.*)$", re.DOTALL)
+_rx_datauri = re.compile("^data:(?P<mime>[a-z-]+/[a-z-]+)(;charset=[\w-]+)?;base64,(?P<data>.*)$", re.DOTALL)
 
 class pisaFileObject:
 
