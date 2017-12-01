@@ -352,6 +352,8 @@ class PmlImageReader(object):
             if self._image.info.has_key("transparency"):
                 transparency = self._image.info["transparency"] * 3
                 palette = self._image.palette
+                if not palette:
+                    return None
                 try:
                     palette = palette.palette
                 except SoftTimeLimitExceeded:
