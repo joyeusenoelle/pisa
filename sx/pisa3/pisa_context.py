@@ -40,7 +40,7 @@ from reportlab.lib.fonts import addMapping
 
 from sx.w3c import css, cssDOMElementInterface
 
-from html5lib.sanitizer import *
+from html5lib.filters.sanitizer import *
 
 import logging
 log = logging.getLogger("ho.pisa")
