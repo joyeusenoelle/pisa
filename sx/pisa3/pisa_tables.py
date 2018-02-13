@@ -25,6 +25,7 @@ from pisa_reportlab import PmlTable, TableStyle, PmlKeepInFrame
 
 import copy
 import sys
+from itertools import izip_longest
 
 import logging
 log = logging.getLogger("ho.pisa")
@@ -212,6 +213,18 @@ class pisaTagTABLE(pisaTag):
 
         try:
             if tdata.data:
+                # This is a bit of a hack -- ensure there are heights for all rows
+                # if a <tr></tr> is empty, a row height isn't generated for it. This will
+                # add a height of None for that row as a default.
+                if len(tdata.data) > len(tdata.rowh):
+                    new_rowh = []
+                    for idx, (row, height) in enumerate(izip_longest(tdata.data, tdata.rowh)):
+                        if len([i for i in row if i == '']) == len(tdata.colw):
+                            new_rowh.append(None)
+                        if idx < len(tdata.rowh):
+                            new_rowh.append(height)
+                    tdata.rowh = new_rowh
+
                 # log.debug("Table sryles %r", tdata.styles)
                 t = PmlTable(
                     data,
