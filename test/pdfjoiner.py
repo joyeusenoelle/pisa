@@ -27,7 +27,7 @@ if __name__=="__main__":
     pdf = pisa_pdf.pisaPDF()
 
     subPdf = pisa.pisaDocument(
-        u"""
+        """
             Hello <strong>World</strong>
         """)
     pdf.addDocument(subPdf)

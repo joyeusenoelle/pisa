@@ -23,7 +23,7 @@ import ho.pisa as pisa
 def helloWorld():
     filename = __file__ + ".pdf"
     pdf = pisa.CreatePDF(
-        u"Hello <strong>World</strong> <img src='data:image/jpg;base64,?´*'>",
+        "Hello <strong>World</strong> <img src='data:image/jpg;base64,?´*'>",
         file(filename, "wb"),
         show_error_as_pdf=True,
         )

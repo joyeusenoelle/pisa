@@ -18,16 +18,16 @@ __reversion__ = "$Revision: 20 $"
 __author__ = "$Author: holtwick $"
 __date__ = "$Date: 2007-10-09 12:58:24 +0200 (Di, 09 Okt 2007) $"
 
-from pisa_default import DEFAULT_CSS
-from pisa_reportlab import *
-from pisa_util import *
+from .pisa_default import DEFAULT_CSS
+from .pisa_reportlab import *
+from .pisa_util import *
 
 from reportlab.graphics.barcode.code128 import Code128
 from reportlab.lib.styles import ParagraphStyle
 from reportlab.platypus.flowables import *
 from reportlab.platypus.paraparser import tt2ps, ABag
 
-from reportlab_paragraph import cleanBlockQuotedText
+from .reportlab_paragraph import cleanBlockQuotedText
 
 import reportlab.lib.utils
 
@@ -163,11 +163,11 @@ class pisaTagH6(pisaTagP): pass
 
 def listDecimal(c):
     c.listCounter += 1
-    return unicode("%d." % c.listCounter)
+    return str("%d." % c.listCounter)
 
-_bullet = u"\u2022"
+_bullet = "\u2022"
 _list_style_type = {
-    "none": u"",
+    "none": "",
     "disc": _bullet,
     "circle": _bullet, # XXX PDF has no equivalent
     "square": _bullet, # XXX PDF has no equivalent
@@ -227,7 +227,7 @@ class pisaTagLI(pisaTag):
 
         self.offset = 0
         if frag.listStyleImage is not None:
-            frag.text = u""
+            frag.text = ""
             f = frag.listStyleImage
             if f and (not f.notFound()):
                 img = PmlImage(
@@ -242,7 +242,7 @@ class pisaTagLI(pisaTag):
                 frag.image = img
                 self.offset = max(0, img.drawHeight - c.frag.fontSize)
         else:
-            if type(lst) == type(u""):
+            if type(lst) == type(""):
                 frag.text = lst
             else:
                 # XXX This should be the recent font, but it throws errors in Reportlab!
@@ -384,7 +384,7 @@ class pisaTagHR(pisaTag):
 
 # --- Forms
 
-import pisa_reportlab
+from . import pisa_reportlab
 
 if 0:
 
@@ -540,7 +540,7 @@ class pisaTagPDFTEMPLATE(pisaTag):
         name = attrs["name"]
         c.frameList = []
         c.frameStaticList = []
-        if c.templateList.has_key(name):
+        if name in c.templateList:
             log.warn(c.warning("template '%s' has already been defined", name))
 
         '''

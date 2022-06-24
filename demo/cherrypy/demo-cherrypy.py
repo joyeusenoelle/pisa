@@ -7,7 +7,7 @@
 
 import cherrypy as cp
 import sx.pisa3 as pisa
-import cStringIO as StringIO
+import io as StringIO
 
 try:
     import kid

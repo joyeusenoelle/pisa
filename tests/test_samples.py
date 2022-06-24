@@ -67,14 +67,14 @@ class VisualObject:
     def compare(self, other, chunk=16*1024, show=True):
         if not self.files:
             return False, "No files"
-        if len(self.files) <> len(other.files):
+        if len(self.files) != len(other.files):
             return False, "Different number of files"
         for i in range(len(self.files)):
             left = self.files[i]
             right = other.files[i]
             a = open(left, "rb")
             b = open(right, "rb")
-            diff = a.read() <> b.read()
+            diff = a.read() != b.read()
             a.close()
             b.close()
             del a

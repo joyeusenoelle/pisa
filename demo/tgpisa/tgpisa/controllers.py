@@ -5,17 +5,17 @@ try:
     pkg_resources.require("SQLObject>=0.8,<=0.10.0")
 except pkg_resources.DistributionNotFound:
     import sys
-    print >> sys.stderr, """You are required to install SQLObject but appear not to have done so.
+    print("""You are required to install SQLObject but appear not to have done so.
 Please run your projects setup.py or run `easy_install SQLObject`.
 
-"""
+""", file=sys.stderr)
     sys.exit(1)
 # import logging
 # log = logging.getLogger("tgpisa.controllers")
 
 from turbogears.decorator import weak_signature_decorator
 import sx.pisa3 as pisa
-import cStringIO as StringIO
+import io as StringIO
 import cherrypy
 
 def pdf(filename=None, content_type="application/pdf"):
@@ -23,7 +23,7 @@ def pdf(filename=None, content_type="application/pdf"):
         def decorated(func, *args, **kw):
             def kwpop(default, *names):
                 for name in names:
-                    if kw.has_key(name):
+                    if name in kw:
                         return kw.pop(name)
                 return default
 

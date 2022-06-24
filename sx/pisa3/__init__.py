@@ -38,10 +38,10 @@ import logging
 log = logging.getLogger(__name__)
 
 try:
-    from pisa import *
+    from .pisa import *
     if not REPORTLAB22:
-        raise ImportError, "Reportlab Toolkit Version 2.2 or higher needed"
-except ImportError, e:
+        raise ImportError("Reportlab Toolkit Version 2.2 or higher needed")
+except ImportError as e:
     import sys
     sys.stderr.write(REQUIRED_INFO % e)
     log.error(REQUIRED_INFO % e)

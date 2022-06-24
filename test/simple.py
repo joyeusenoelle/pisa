@@ -21,7 +21,7 @@ __date__    = "$Date: 2008-04-18 18:59:53 +0200 (Fr, 18 Apr 2008) $"
 import os
 import sys
 import cgi
-import cStringIO
+import io
 import logging
 
 import ho.pisa as pisa
@@ -36,7 +36,7 @@ def dumpErrors(pdf, showLog=True):
     #if pdf.warn:
     #    print "*** %d WARNINGS OCCURED" % pdf.warn
     if pdf.err:
-        print "*** %d ERRORS OCCURED" % pdf.err
+        print("*** %d ERRORS OCCURED" % pdf.err)
 
 def testSimple(
     data="""Hello <b>World</b><br/><img src="img/test.jpg"/>""",
@@ -49,7 +49,7 @@ def testSimple(
     """
 
     pdf = pisa.CreatePDF(
-        cStringIO.StringIO(data),
+        io.StringIO(data),
         file(dest, "wb")
         )
 
@@ -65,20 +65,20 @@ def testCGI(data="Hello <b>World</b>"):
     file object and then send it to STDOUT
     """
 
-    result = cStringIO.StringIO()
+    result = io.StringIO()
 
     pdf = pisa.CreatePDF(
-        cStringIO.StringIO(data),
+        io.StringIO(data),
         result
         )
 
     if pdf.err:
-        print "Content-Type: text/plain"
-        print
+        print("Content-Type: text/plain")
+        print()
         dumpErrors(pdf)
     else:
-        print "Content-Type: application/octet-stream"
-        print
+        print("Content-Type: application/octet-stream")
+        print()
         sys.stdout.write(result.getvalue())
 
 def testBackgroundAndImage(
@@ -115,10 +115,10 @@ def testURL(
     the Reportlab Toolkit needs real filenames for images and stuff. Then
     we also pass the url as 'path' for relative path calculations.
     """
-    import urllib
+    import urllib.request, urllib.parse, urllib.error
 
     pdf = pisa.CreatePDF(
-        urllib.urlopen(url),
+        urllib.request.urlopen(url),
         file(dest, "wb"),
         log_warn = 1,
         log_err = 1,

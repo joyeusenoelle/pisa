@@ -42,7 +42,7 @@ import logging
 log = logging.getLogger("ho.css")
 
 def toList(value):
-    if type(value)!=types.ListType:
+    if type(value)!=list:
         return [value]
     return value
 
@@ -150,7 +150,7 @@ def getNextPart(parts):
     return part
 
 def isSize(value):
-    return value and ((type(value) is types.TupleType) or value=="0")
+    return value and ((type(value) is tuple) or value=="0")
         
 def splitBorder(parts):
     """
@@ -173,7 +173,7 @@ def splitBorder(parts):
             # part = getNextPart(parts)
         
         # Style
-        elif _borderStyleTable.has_key(part.lower()):
+        elif part.lower() in _borderStyleTable:
             style = part
             # part = getNextPart(parts)
     
@@ -205,15 +205,15 @@ def parseSpecialRules(declarations, debug=0):
                 ddlen = len(dd)                            
                 part = getNextPart(parts)
                 # Style
-                if part and _styleTable.has_key(part):                       
+                if part and part in _styleTable:                       
                     dd.append(("font-style", part, last))
                     part = getNextPart(parts)
                 # Variant
-                if part and _variantTable.has_key(part):                       
+                if part and part in _variantTable:                       
                     dd.append(("font-variant", part, last))
                     part = getNextPart(parts)
                 # Weight
-                if part and _weightTable.has_key(part):                                       
+                if part and part in _weightTable:                                       
                     dd.append(("font-weight", part, last))
                     part = getNextPart(parts)                    
                 # Size and Line Height
@@ -242,7 +242,7 @@ def parseSpecialRules(declarations, debug=0):
                         
                 if 0:
                     part = getNextPart(parts) or oparts
-                    print "~", part, parts, oparts, declarations
+                    print("~", part, parts, oparts, declarations)
                     # Color
                     if part and (not part.startswith("url")):
                         dd.append(("background-color", part, last))
@@ -406,8 +406,8 @@ def parseSpecialRules(declarations, debug=0):
             log.debug("CSS special OUT:\n%s", "\n".join([repr(d) for d in dd]))
         
         if 0: #declarations!=dd:
-            print "###", declarations
-            print "#->", dd
+            print("###", declarations)
+            print("#->", dd)
         # CSS MODIFY! END
         return dd
 

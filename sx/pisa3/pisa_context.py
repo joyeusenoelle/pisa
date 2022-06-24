@@ -18,13 +18,13 @@ __reversion__ = "$Revision: 20 $"
 __author__ = "$Author: holtwick $"
 __date__ = "$Date: 2007-10-09 12:58:24 +0200 (Di, 09 Okt 2007) $"
 
-from pisa_util import *
-from pisa_reportlab import *
+from .pisa_util import *
+from .pisa_reportlab import *
 
-import pisa_default
-import pisa_parser
+from . import pisa_default
+from . import pisa_parser
 import re
-import urlparse
+import urllib.parse
 import types
 
 from reportlab.platypus.paraparser import ParaParser, ParaFrag, ps2tt, tt2ps, ABag
@@ -54,7 +54,7 @@ sizeDelta = 2       # amount to reduce font size by for super and sub script
 subFraction = 0.4   # fraction of font size that a sub script should be lowered
 superFraction = 0.4
 
-NBSP = u"\u00a0"
+NBSP = "\u00a0"
 
 def clone(self, **kwargs):
     n = ParaFrag(**self.__dict__)
@@ -167,13 +167,13 @@ class pisaCSSBuilder(css.CSSBuilder):
         result = self.ruleset([self.selector('*')], declarations)
         # print "@FONT-FACE", declarations, result
         try:
-            data = result[0].values()[0]
+            data = list(result[0].values())[0]
             names = data["font-family"]
 
             # Font weight
             fweight = str(data.get("font-weight", "normal")).lower()
             bold = fweight in ("bold", "bolder", "500", "600", "700", "800", "900")
-            if not bold and fweight <> "normal":
+            if not bold and fweight != "normal":
                 log.warn(self.c.warning("@fontface, unknown value font-weight '%s'", fweight))
 
             # Font style
@@ -187,7 +187,7 @@ class pisaCSSBuilder(css.CSSBuilder):
                 italic=italic)
         except SoftTimeLimitExceeded:
             raise
-        except Exception, e:
+        except Exception as e:
             log.warn(self.c.warning("@fontface"), exc_info=1)
         return {}, {}
 
@@ -258,29 +258,29 @@ class pisaCSSBuilder(css.CSSBuilder):
                 # print "@PAGE", name, pseudopage, declarations, result
 
                 if declarations:
-                    data = result[0].values()[0]
+                    data = list(result[0].values())[0]
                     pageBorder = data.get("-pdf-frame-border", None)
 
-            if c.templateList.has_key(name):
+            if name in c.templateList:
                 log.warn(self.c.warning("template '%s' has already been defined", name))
 
-            if data.has_key("-pdf-page-size"):
+            if "-pdf-page-size" in data:
                 c.pageSize = pisa_default.PML_PAGESIZES.get(str(data["-pdf-page-size"]).lower(), c.pageSize)
 
-            if data.has_key("size"):
+            if "size" in data:
                 size = data["size"]
                 # print size, c.pageSize
-                if type(size) is not types.ListType:
+                if type(size) is not list:
                     size = [size]
                 isLandscape = False
                 sizeList = []
                 for value in size:
                     valueStr = str(value).lower()
-                    if type(value) is types.TupleType:
+                    if type(value) is tuple:
                         sizeList.append(getSize(value))
                     elif valueStr == "landscape":
                         isLandscape = True
-                    elif pisa_default.PML_PAGESIZES.has_key(valueStr):
+                    elif valueStr in pisa_default.PML_PAGESIZES:
                         c.pageSize = pisa_default.PML_PAGESIZES[valueStr]
                     else:
                         log.warn(c.warning("Unknown size value for @page"))
@@ -302,7 +302,7 @@ class pisaCSSBuilder(css.CSSBuilder):
                 "width",
                 "height"
                 ]:
-                if data.has_key(prop):
+                if prop in data:
                     c.frameList.append(self._pisaAddFrame(name, data, first=True, border=pageBorder, size=c.pageSize))
                     break
             # self._drawing = PmlPageDrawing(self._pagesize)
@@ -378,7 +378,7 @@ class pisaCSSBuilder(css.CSSBuilder):
 
         except SoftTimeLimitExceeded:
             raise
-        except Exception, e:
+        except Exception as e:
             log.warn(self.c.warning("@page"), exc_info=1)
 
         return {}, {}
@@ -390,7 +390,7 @@ class pisaCSSBuilder(css.CSSBuilder):
             try:
                 data = result[0]
                 if data:
-                    data = data.values()[0]
+                    data = list(data.values())[0]
                     self.c.frameList.append(
                         self._pisaAddFrame(
                             name,
@@ -398,7 +398,7 @@ class pisaCSSBuilder(css.CSSBuilder):
                             size=self.c.pageSize))
             except SoftTimeLimitExceeded:
                 raise
-            except Exception, e:
+            except Exception as e:
                 log.warn(self.c.warning("@frame"), exc_info=1)
         return {}, {}
 
@@ -413,7 +413,7 @@ class pisaCSSParser(css.CSSParser):
         if not cssFile:
             return None
         if self.rootPath and (self.rootPath.startswith("http:") or self.rootPath.startswith("https:")):
-            self.rootPath = urlparse.urljoin(self.rootPath, cssResourceName)
+            self.rootPath = urllib.parse.urljoin(self.rootPath, cssResourceName)
         else:
             self.rootPath = getDirName(cssFile.uri)
         # print "###", self.rootPath
@@ -440,7 +440,7 @@ class pisaContext:
         self.log = []
         self.err = 0
         self.warn = 0
-        self.text = u""
+        self.text = ""
         self.uidctr = 0
         self.multiBuild = False
 
@@ -658,14 +658,14 @@ class pisaContext:
     def dumpPara(self, frags, style):
         return
 
-        print "%s/%s %s *** PARA" % (style.fontSize, style.leading, style.fontName)
+        print("%s/%s %s *** PARA" % (style.fontSize, style.leading, style.fontName))
         for frag in frags:
-            print "%s/%s %r %r" % (
+            print("%s/%s %r %r" % (
                 frag.fontSize,
                 frag.leading,
                 getattr(frag, "cbDefn", None),
-                frag.text)
-        print
+                frag.text))
+        print()
 
     def addPara(self, force=False):
 
@@ -777,7 +777,7 @@ class pisaContext:
     def clearFrag(self):
         self.fragList = []
         self.fragStrip = True
-        self.text = u""
+        self.text = ""
 
     def copyFrag(self, **kw):
         return self.frag.clone(**kw)
@@ -830,9 +830,9 @@ class pisaContext:
 
         # Replace &shy; with empty and normalize NBSP
         text = (text
-            .replace(u"\xad", u"")
-            .replace(u"\xc2\xa0", NBSP)
-            .replace(u"\xa0", NBSP))
+            .replace("\xad", "")
+            .replace("\xc2\xa0", NBSP)
+            .replace("\xa0", NBSP))
 
         # log.debug("> %r", text)
 
@@ -850,7 +850,7 @@ class pisaContext:
                     self._appendFrag(frag)
                 else:
                     # Handle tabs in a simple way
-                    text = text.replace(u"\t", 8 * u" ")
+                    text = text.replace("\t", 8 * " ")
                     # Somehow for Reportlab NBSP have to be inserted
                     # as single character fragments
                     for text in re.split(r'(\ )', text):
@@ -860,7 +860,7 @@ class pisaContext:
                         frag.text = text
                         self._appendFrag(frag)
         else:
-            for text in re.split(u'(' + NBSP + u')', text):
+            for text in re.split('(' + NBSP + ')', text):
                 frag = baseFrag.clone()
                 if text == NBSP:
                     self.force = True
@@ -963,7 +963,7 @@ class pisaContext:
         Name of a font
         """
         # print names, self.fontList
-        if type(names) is not types.ListType:
+        if type(names) is not list:
             names = str(names).strip().split(",")
         for name in names:
             font = self.fontList.get(str(name).strip().lower(), None)
@@ -986,7 +986,7 @@ class pisaContext:
 
             log.debug("Load font %r", src)
 
-            if type(names) is types.ListType:
+            if type(names) is list:
                 fontAlias = names
             else:
                 fontAlias = [x.lower().strip() for x in names.split(",") if x]

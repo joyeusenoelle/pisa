@@ -19,13 +19,13 @@ __reversion__ = "$Revision: 20 $"
 __author__ = "$Author: holtwick $"
 __date__ = "$Date: 2007-10-09 12:58:24 +0200 (Di, 09 Okt 2007) $"
 
-from pisa_tags import pisaTag
-from pisa_util import *
-from pisa_reportlab import PmlTable, TableStyle, PmlKeepInFrame
+from .pisa_tags import pisaTag
+from .pisa_util import *
+from .pisa_reportlab import PmlTable, TableStyle, PmlKeepInFrame
 
 import copy
 import sys
-from itertools import izip_longest
+from itertools import zip_longest
 
 import logging
 log = logging.getLogger("ho.pisa")
@@ -218,7 +218,7 @@ class pisaTagTABLE(pisaTag):
                 # add a height of None for that row as a default.
                 if len(tdata.data) > len(tdata.rowh):
                     new_rowh = []
-                    for idx, (row, height) in enumerate(izip_longest(tdata.data, tdata.rowh)):
+                    for idx, (row, height) in enumerate(zip_longest(tdata.data, tdata.rowh)):
                         if len([i for i in row if i == '']) == len(tdata.colw):
                             new_rowh.append(None)
                         if idx < len(tdata.rowh):

@@ -38,8 +38,8 @@ Dependencies:
 
 import copy
 import sets
-import cssParser
-import cssSpecial
+from . import cssParser
+from . import cssSpecial
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #~ Constants / Variables / Etc.
@@ -143,7 +143,7 @@ class CSSCascadeStrategy(object):
         """
         rules = self.findCSSRulesForEach(element, attrNames)
         return [(attrName, self._extractStyleForRule(rule, attrName, default))
-                for attrName, rule in rules.iteritems()]
+                for attrName, rule in rules.items()]
 
     def findCSSRulesFor(self, element, attrName):
         rules = []
@@ -160,10 +160,10 @@ class CSSCascadeStrategy(object):
 
         inline = element.getInlineStyle()
         for ruleset in self.iterCSSRulesets(inline):
-            for attrName, attrRules in rules.iteritems():
+            for attrName, attrRules in rules.items():
                 attrRules += ruleset.findCSSRuleFor(element, attrName)
 
-        for attrRules in rules.itervalues():
+        for attrRules in rules.values():
             attrRules.sort()
         return rules
 
@@ -488,7 +488,7 @@ class CSSRuleset(dict):
     def findCSSRulesFor(self, element, attrName):
         ruleResults = []
         append = ruleResults.append
-        for nodeFilter, declarations in self.iteritems():
+        for nodeFilter, declarations in self.items():
             if (attrName in declarations) and (nodeFilter.matches(element)):
                 append((nodeFilter, declarations))
         ruleResults.sort()
@@ -501,8 +501,8 @@ class CSSRuleset(dict):
 
     def mergeStyles(self, styles):
         " XXX Bugfix for use in PISA "
-        for k, v in styles.items():
-            if self.has_key(k) and self[k]:
+        for k, v in list(styles.items()):
+            if k in self and self[k]:
                 self[k] = copy.copy(self[k])
                 self[k].update(v)
             else:

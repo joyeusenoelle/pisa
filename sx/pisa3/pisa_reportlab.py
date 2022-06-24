@@ -25,7 +25,7 @@ from reportlab.platypus.flowables import Flowable, Image, CondPageBreak, KeepInF
 from reportlab.platypus.frames import Frame
 from reportlab.platypus.tableofcontents import TableOfContents
 
-from reportlab_paragraph import Paragraph
+from .reportlab_paragraph import Paragraph
 
 from reportlab.lib.utils import *
 
@@ -37,8 +37,8 @@ except:
     except:
         PILImage = None
 
-from pisa_util import *
-from pisa_default import TAGS, STRING
+from .pisa_util import *
+from .pisa_default import TAGS, STRING
 
 import copy
 import cgi
@@ -201,7 +201,7 @@ class PmlPageTemplate(PageTemplate):
 
             except SoftTimeLimitExceeded:
                 raise
-            except Exception, e:
+            except Exception as e:
                 log.debug("PmlPageTemplate", exc_info=1)
 
 
@@ -252,7 +252,7 @@ class PmlImageReader(object):
                             register_reset(self._cache.clear)
                         data = self._cache.setdefault(md5(data).digest(), data)
                     self.fp = getStringIO(data)
-                elif imageReaderFlags == - 1 and isinstance(fileName, (str, unicode)):
+                elif imageReaderFlags == - 1 and isinstance(fileName, str):
                     #try Ralf Schmitt's re-opening technique of avoiding too many open files
                     self.fp.close()
                     del self.fp #will become a property in the next statement
@@ -278,7 +278,7 @@ class PmlImageReader(object):
                 if hasattr(ev, 'args'):
                     a = str(ev.args[ - 1]) + (' fileName=%r' % fileName)
                     ev.args = ev.args[: - 1] + (a,)
-                    raise et, ev, tb
+                    raise et(ev).with_traceback(tb)
                 else:
                     raise
 
@@ -349,7 +349,7 @@ class PmlImageReader(object):
         if sys.platform[0:4] == 'java':
             return None
         else:
-            if self._image.info.has_key("transparency"):
+            if "transparency" in self._image.info:
                 transparency = self._image.info["transparency"] * 3
                 palette = self._image.palette
                 if not palette:
@@ -360,7 +360,7 @@ class PmlImageReader(object):
                     raise
                 except:
                     palette = palette.data
-                return map(ord, palette[transparency:transparency + 3])
+                return list(map(ord, palette[transparency:transparency + 3]))
             else:
                 return None
 

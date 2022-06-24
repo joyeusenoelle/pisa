@@ -23,7 +23,7 @@ import ho.pisa as pisa
 def helloWorld():
     filename = __file__ + ".pdf"
     pdf = pisa.CreatePDF(
-        u"Hello <strong>World</strong>",
+        "Hello <strong>World</strong>",
         file(filename, "wb")
         )
     if not pdf.err:

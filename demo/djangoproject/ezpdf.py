@@ -4,7 +4,7 @@
 from django.template.loader import get_template
 from django.template import Context
 from django.http import HttpResponse
-import cStringIO as StringIO
+import io as StringIO
 from sx.pisa3 import pisaDocument
 import cgi
 

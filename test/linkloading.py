@@ -64,7 +64,7 @@ class myLinkLoader:
                 tmpFile.close()
             self.tmpFileList.append(tmpPath)
             return tmpPath
-        except Exception, e:
+        except Exception as e:
             log.exception("myLinkLoader.getFileName")
         return None
 
@@ -74,7 +74,7 @@ def helloWorld():
     lc = myLinkLoader(database="some_name", port=666).getFileName
 
     pdf = pisa.CreatePDF(
-        u"""
+        """
             <p>
             Hello <strong>World</strong>
             <p>

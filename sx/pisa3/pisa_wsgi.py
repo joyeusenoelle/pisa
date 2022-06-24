@@ -20,7 +20,7 @@ __date__    = "$Date: 2007-10-31 17:08:54 +0100 (Mi, 31 Okt 2007) $"
 __svnid__   = "$Id: pisa.py 103 2007-10-31 16:08:54Z holtwick $"
 
 import ho.pisa as pisa
-import StringIO
+import io
 
 import logging
 log = logging.getLogger("ho.pisa.wsgi")
@@ -34,7 +34,7 @@ class Filter(object):
         script_name = environ.get('SCRIPT_NAME', '')
         path_info = environ.get('PATH_INFO', '')
         sent = []
-        written_response = StringIO.StringIO()
+        written_response = io.StringIO()
         def replacement_start_response(status, headers, exc_info=None):
             if not self.should_filter(status, headers):
                 return start_response(status, headers, exc_info)
@@ -58,7 +58,7 @@ class Filter(object):
         return [body]
 
     def should_filter(self, status, headers):
-        print headers
+        print(headers)
     
     def filter(self, status, headers, body):
         raise NotImplementedError
@@ -85,7 +85,7 @@ class PisaMiddleware(HTMLFilter):
             body): 
         topdf = environ.get("pisa.topdf", "")        
         if topdf:            
-            dst = StringIO.StringIO()
+            dst = io.StringIO()
             result = pisa.CreatePDF(
                 body,
                 dst,
