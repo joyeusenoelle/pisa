@@ -5,7 +5,7 @@
 # Licensed under the Apache License, Version 2.0 (the "License");
 # you may not use this file except in compliance with the License.
 # You may obtain a copy of the License at
-# 
+#
 #     http://www.apache.org/licenses/LICENSE-2.0
 #
 # Unless required by applicable law or agreed to in writing, software
@@ -19,10 +19,10 @@ In the near future pisa will be moved into the namespace "ho"
 This is a helper for migration
 """
 
-__reversion__ = "$Revision: 160 $"
-__author__    = "$Author: holtwick $"
-__date__      = "$Date: 2008-03-12 16:40:03 +0100 (Mi, 12 Mrz 2008) $"
+__version__ = "$Revision: 222 $"
+__author__ = "$Author: holtwick and noelle.anthony $"
+__date__ = "$Date: 2022-06-24 21:38:00 -0500 (Fr, 24 June 2022) $"
 
 from sx.pisa3.pisa import *
 
-__version__   = VERSION
+__version__ = VERSION
