@@ -15,10 +15,9 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-__version__ = "$Revision: 221 $"
-__author__ = "$Author: holtwick $"
-__date__ = "$Date: 2008-05-31 18:56:27 +0200 (Sa, 31 Mai 2008) $"
-__svnid__ = "$Id: pisa.py 221 2008-05-31 16:56:27Z holtwick $"
+__version__ = "$Revision: 222 $"
+__author__ = "$Author: holtwick and noelle.anthony $"
+__date__ = "$Date: 2022-06-24 21:38:00 -0500 (Fr, 24 June 2022) $"
 
 import ho.pisa as pisa
 
