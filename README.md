@@ -1,10 +1,8 @@
-HELP
-====
+# Help
 
 > xhtml2pdf -h
 
-REQUIREMENTS
-============
+# Requirements
 
 - Reportlab Toolkit 2.2+
   <http://www.reportlab.org/>
@@ -15,23 +13,26 @@ REQUIREMENTS
 - pyPdf 1.11+ (optional)
   <http://pybrary.net/pyPdf/>
 
-EXAMPLES
-========
+# Examples
 
 > xhtml2pdf -s test\test-loremipsum.html
 > xhtml2pdf -s http://www.python.org
 > xhtml2pdf test\test-*.html
 
-PYTHON INTEGRATION
-==================
+# Python Integration
 
 Some simple demos of how to integrate PISA into
 a Python program may be found here: test\simple.py
 
-CONTACT
-=======
+# TODO
 
-dirk.holtwick@gmail.com
+* Rewrite this README to reflect the new version
+
+# Contact
+
+noelle.anthony@drchrono.com for the Python 3 version
+
+dirk.holtwick@gmail.com for the original Python 2 version
 
 LICENSE
 =======
