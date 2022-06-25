@@ -6,6 +6,10 @@
   very much for their help and support!" - Dirk
 ********************************************************************************
 
+Version 4.0.1b, 2022-06-24
+- UPD: 2to3 has been run over each Python script in the library to begin 
+       the process of updating to Python 3.
+
 Version 3.0.33, 2010-06-16
 - NEW: Changed license to Apache License 2.0, now completely Open Source 
        without any charging. Feel free to continue or for this project.
